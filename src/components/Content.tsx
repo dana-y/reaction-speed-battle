@@ -1,10 +1,13 @@
 import { Button, Stack, TextField, Typography } from "@mui/material";
 import { useState } from "react";
 import SelectKey from "./SelectKey";
+import Play from "./Play";
 
 const Content = () => {
   const [step, setStep] = useState<number>(0);
   const [playerNum, setPlayerNum] = useState<number>(1);
+
+  const [playerKeyMap, setPlayerKeyMap] = useState<Record<number, string>>({});
 
   const isDisabled = playerNum < 1 || playerNum > 4;
 
@@ -38,9 +41,16 @@ const Content = () => {
         </Stack>
       );
     case 1:
-      return <SelectKey playerNum={playerNum} />;
+      return (
+        <SelectKey
+          playerNum={playerNum}
+          playerKeyMap={playerKeyMap}
+          updatePlayerKeyMap={setPlayerKeyMap}
+          updateStep={setStep}
+        />
+      );
     case 2:
-      return <div>Content</div>;
+      return <Play playerNum={playerNum} playerKeyMap={playerKeyMap} />;
   }
 };
 
