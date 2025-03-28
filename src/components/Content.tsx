@@ -25,8 +25,18 @@ const Content = () => {
             onChange={(e) => setPlayerNum(Number(e.target.value))}
             error={isDisabled}
             helperText={
-              isDisabled ? "Please enter a number between 1 and 4" : ""
+              isDisabled
+                ? "Please enter a number between 1 and 4. max 4 players"
+                : ""
             }
+            onKeyDown={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+
+              if (e.key === "Enter") {
+                setStep(1);
+              }
+            }}
           />
           <span>
             <Button
