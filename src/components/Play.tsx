@@ -1,4 +1,4 @@
-import { Stack, Typography } from "@mui/material";
+import { Button, Stack, Typography } from "@mui/material";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 interface PlayProps {
@@ -8,14 +8,14 @@ interface PlayProps {
 
 const Play = ({ playerNum, playerKeyMap }: PlayProps) => {
   const timer = useRef<NodeJS.Timeout | null>(null);
-  const [background, setBackground] = useState<string>("tomato");
-  const [result, setResult] = useState<Record<number, number>>({});
-
-  const isDone = Object.values(result).length === playerNum;
-
   const startTime = useRef<number>(0);
 
-  const changedTime = Math.floor(Math.random() * 5) + 1;
+  const [result, setResult] = useState<Record<number, number>>({});
+  const [background, setBackground] = useState("tomato");
+  const [changedTime, setChangedTime] = useState(
+    Math.floor(Math.random() * 5) + 1
+  ); // Example time in seconds
+  const isDone = Object.values(result).length === playerNum;
 
   useEffect(() => {
     timer.current = setTimeout(() => {
@@ -28,16 +28,21 @@ const Play = ({ playerNum, playerKeyMap }: PlayProps) => {
         clearTimeout(timer.current);
       }
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [changedTime, isDone]); // Add `background` to the dependency array
+
+  useEffect(() => {
+    if (isDone && timer.current) {
+      clearTimeout(timer.current);
+    }
+  }, [isDone]);
 
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
+      if (isDone) return;
+
       const playerIndex = Number(
         Object.keys(playerKeyMap).find((key) => playerKeyMap[key] === e.key)
       );
-
-      console.log(playerIndex);
 
       if (playerIndex !== undefined && playerKeyMap[playerIndex] !== 0) {
         if (background === "tomato") {
@@ -50,7 +55,7 @@ const Play = ({ playerNum, playerKeyMap }: PlayProps) => {
         }
       }
     },
-    [background, playerKeyMap]
+    [background, isDone, playerKeyMap]
   );
 
   useEffect(() => {
@@ -68,6 +73,18 @@ const Play = ({ playerNum, playerKeyMap }: PlayProps) => {
             ? "Congratulations! You've completed the game!"
             : "Press your key when background color is changed 👇"}
         </Typography>
+        {isDone && (
+          <Button
+            variant="contained"
+            onClick={() => {
+              setResult({});
+              setBackground("tomato");
+              setChangedTime(Math.floor(Math.random() * 5) + 1);
+            }}
+          >
+            Play Again
+          </Button>
+        )}
       </Stack>
       <Stack display="grid" flexGrow={1} gridTemplateColumns="1fr 1fr" gap={2}>
         {Array.from({ length: playerNum }).map((_, index) => (
@@ -89,7 +106,7 @@ const Play = ({ playerNum, playerKeyMap }: PlayProps) => {
             </Typography>
             {isDone && (
               <Typography variant="h4" fontWeight="bold" color="textPrimary">
-                {result[index] / 1000} seconds
+                {getResult(result[index])}
               </Typography>
             )}
           </Stack>
@@ -97,6 +114,14 @@ const Play = ({ playerNum, playerKeyMap }: PlayProps) => {
       </Stack>
     </Stack>
   );
+};
+
+const getResult = (result: number) => {
+  if (result === 0) {
+    return "Failed! Try again!";
+  }
+
+  return `${result / 1000} seconds`;
 };
 
 export default Play;

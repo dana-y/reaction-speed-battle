@@ -30,10 +30,9 @@ const Content = () => {
                 : ""
             }
             onKeyDown={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-
               if (e.key === "Enter") {
+                e.preventDefault();
+                e.stopPropagation();
                 setStep(1);
               }
             }}

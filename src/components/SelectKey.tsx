@@ -21,7 +21,8 @@ const SelectKey = ({
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      console.log(event.key);
+      if (isDone) return;
+
       if (selectingPlayer !== null && event.key) {
         updatePlayerKeyMap((prev) => ({
           ...prev,
