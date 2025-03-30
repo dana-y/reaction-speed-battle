@@ -24,8 +24,13 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Add CNAME file
-        run: echo "reactiongame.site" > ./build/CNAME
+      - name: Check build folder
+        run: ls -la
+
+      - name: Create CNAME
+        run: |
+          mkdir -p build
+          echo "reactiongame.site" > build/CNAME
 
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@v4
