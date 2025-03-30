@@ -7,7 +7,7 @@ interface PlayProps {
 }
 
 const Play = ({ playerNum, playerKeyMap }: PlayProps) => {
-  const timer = useRef<NodeJS.Timeout | null>(null);
+  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const startTime = useRef<number>(0);
 
   const [result, setResult] = useState<Record<number, number>>({});
@@ -41,10 +41,12 @@ const Play = ({ playerNum, playerKeyMap }: PlayProps) => {
       if (isDone) return;
 
       const playerIndex = Number(
-        Object.keys(playerKeyMap).find((key) => playerKeyMap[key] === e.key)
+        Object.keys(playerKeyMap).find(
+          (key) => playerKeyMap[Number(key)] === e.key
+        )
       );
 
-      if (playerIndex !== undefined && playerKeyMap[playerIndex] !== 0) {
+      if (playerIndex !== undefined && playerKeyMap[playerIndex] !== "0") {
         if (background === "tomato") {
           setResult((prev) => ({ ...prev, [playerIndex]: 0 }));
         } else {
