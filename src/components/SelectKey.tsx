@@ -45,7 +45,7 @@ const SelectKey = ({
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [playerNum, selectingPlayer, updatePlayerKeyMap]);
+  }, [isDone, playerNum, selectingPlayer, updatePlayerKeyMap]);
 
   return (
     <Stack height="100%" gap={5}>
@@ -72,7 +72,7 @@ const SelectKey = ({
               alignItems: "center",
               backgroundColor: "tomato",
               padding: 3,
-              borderRadius: 2,
+              borderRadius: 4,
               opacity: selectingPlayer === index ? 1 : 0.5,
             }}
           >

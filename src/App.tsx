@@ -32,7 +32,12 @@ function App() {
       >
         <Stack gap={4} height="100%">
           {/* title */}
-          <Typography variant="h3" color="textPrimary">
+          <Typography
+            variant="h3"
+            component="h1"
+            fontWeight={700}
+            color="textPrimary"
+          >
             Reaction Speed Battle
           </Typography>
 

@@ -95,7 +95,7 @@ const Play = ({ playerNum, playerKeyMap }: PlayProps) => {
               alignItems: "center",
               backgroundColor: background,
               padding: 3,
-              borderRadius: 2,
+              borderRadius: 4,
             }}
           >
             <Typography variant="h5" color="textSecondary">
